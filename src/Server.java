@@ -13,14 +13,14 @@ public class Server {
 		list = new ArrayList<Message>();
 		puertoServidor = serverPort;
 		try {
-			DatagramSocket serverSocket = new DatagramSocket(puertoServidor);
+			serverSocket = new DatagramSocket(puertoServidor);
 		}catch( SocketException e){
 			System.err.println(e);
 		}
 		
         //2) buffer de datos a enviar y recibir
-        byte[] receiveData = new byte[1024];
-        byte[] sendData = new byte[1024];
+        receiveData = new byte[1024];
+        sendData = new byte[1024];
 	}
 	
 	
@@ -51,21 +51,53 @@ public class Server {
 	        
 	        Message msg = new Message();
 	        String datoRecibido = new String(receivePacket.getData());
+	        System.out.println(datoRecibido);
 	        msg.toMessage( datoRecibido.trim() );
 	        Integer operation = Integer.parseInt( msg.getOperation() );
+	        
 			if ( operation.equals(1) )
 			{
 				list.add(msg);
 				msg = new Message("1");
 				sendMessage( msg , IPAddress , port);
+				System.out.println( "datos metereologicos recibido operacion 1 ");
+				
 			}
 			else if ( operation.equals(2) )
 			{
-				String temp = list.lastIndexOf( msg );
+				String city = msg.getCity();
+				Message res = new Message();
+			    for(Message m : list) {
+			        if ( m.getCity().equals(city) ) {
+			            res = m;
+			        }
+			    }
+			    msg = new Message("2");
+			    msg.setTemp( res.getTemp() );
+			    msg.setCity( res.getCity() );
+			    sendMessage( msg , IPAddress, port);
+			    System.out.println( "datos metereologicos enviado operacion 2 ");
 			}
 			else if( operation.equals(3) )
 			{
-	
+				Integer temperatura = 0;
+				Integer contador = 0;
+				String tempPromedio;
+				String date = msg.getDate();
+				
+			    for(Message m : list) {
+			        if ( m.getDate().equals(date) ) {
+			            temperatura = temperatura + Integer.parseInt( m.getTemp() );
+			            contador++;
+			        }
+			    }
+			    tempPromedio = Integer.toString( temperatura / contador );
+			    
+			    msg = new Message("3");
+			    msg.setTemp( tempPromedio );
+			    msg.setDate( date );
+			    sendMessage( msg , IPAddress, port);
+			    System.out.println( "datos metereologicos enviado operacion 3 ");
 			}
 			else
 			{
@@ -85,5 +117,13 @@ public class Server {
 		} catch (IOException e) {
 			System.err.println(e);
 		}
+	}
+	
+	public static void main(String[] args)
+	{
+		Server servidor = new Server( 6666 );
+		servidor.run();
+		
+		
 	}
 }

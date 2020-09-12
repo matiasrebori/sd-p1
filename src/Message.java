@@ -44,14 +44,14 @@ public class Message {
 		this.time = "0";
 	}
 	
-	public Message(String operation, String date) {
+	public Message(String operation, String city) {
 		this.operation = operation;
 		this.id = "0";
-		this.city = "0";
+		this.city = city;
 		this.humidity = "0";
 		this.temp = "0";
 		this.windVel = "0";
-		this.date = date;
+		this.date = "0";
 		this.time = "0";
 	}
 	

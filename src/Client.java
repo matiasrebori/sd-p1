@@ -61,6 +61,7 @@ public class Client {
 		        sendData = datoPaquete.getBytes();
 		        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, puertoServidor);
 		        clientSocket.send(sendPacket);
+		        System.out.println(" Datis enviados a server: " + msg.getOperation() + " " + msg.getTemp() + " " + msg.getCity() );
 			}
 			else if ( operation.equals(2) )
 			{
@@ -77,7 +78,9 @@ public class Client {
 			else if( operation.equals(3) )
 			{
 				msg = new Message( word);
-				
+				System.out.println("Ingrese fecha");
+				String date = inFromUser.readLine();
+				msg.setDate(date);
 				//enviar mensaje
 		        String datoPaquete = msg.toJSON();
 		        sendData = datoPaquete.getBytes();
@@ -119,7 +122,7 @@ public class Client {
             }
             else if( operation.equals(3) )
             {
-            	System.out.println("Temperatura en fecha: " + msg.getDate() + " es igual a: " + msg.getTemp()  );
+            	System.out.println("Temperatura promedio en fecha: " + msg.getDate() + " es igual a: " + msg.getTemp()  );
             }
             else
             {
