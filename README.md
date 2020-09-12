@@ -14,3 +14,5 @@ se abre cliente - se tipea 2 - va a pedir ciudad - se tipea la ciudad - llega la
 No me dio tiempo de validar fechas asi que al probar utilizar el mismo formato, sugiero 00-00-2020.
 
 Este proyecto contiene como libreria el JSON
+
+Matias Gabriel Martinez Rebori 
